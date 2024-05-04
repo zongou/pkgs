@@ -14,6 +14,6 @@ PKG_BUILD_IN_SRC=true
 # "
 
 build() {
-	setup_go_toolchain
+	setup_golang
 	make BIN_DST="${OUTPUT_DIR}" -j"${JOBS}" install
 }

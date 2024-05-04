@@ -10,7 +10,7 @@ PKG_SRCURL=https://github.com/charmbracelet/glow/archive/v${PKG_VERSION}${PKG_EX
 PKG_COMMIT_ID=ad21129
 
 build() {
-	setup_go_toolchain
+	setup_golang
 	go build -ldflags="-w -s -X main.Version=${PKG_VERSION} -X main.CommitSHA=${PKG_COMMIT_ID}" 
 	install -Dt "${OUTPUT_DIR}/bin/" glow
 }

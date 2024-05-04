@@ -11,7 +11,7 @@ PKG_SRCURL=https://github.com/lsd-rs/lsd/archive/v${PKG_VERSION}${PKG_EXTNAME}
 PKG_DEPENDS="zlib"
 
 build() {
-	setup_rust_toolchain
+	setup_rust
 	export RUSTFLAGS="-C link-arg=-s -C opt-level=s -C lto=true"
 	cargo build --release
 	install "target/${CARGO_BUILD_TARGET}/release/${PKG_NAME}" -D "${OUTPUT_DIR}/bin/${PKG_NAME}"

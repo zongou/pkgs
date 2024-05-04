@@ -8,7 +8,7 @@ PKG_EXTNAME=.tar.gz
 PKG_SRCURL=https://github.com/showwin/speedtest-go/archive/refs/tags/v${PKG_VERSION}.tar.gz
 
 build() {
-	setup_go_toolchain
+	setup_golang
 	go build -ldflags='-w -s'
 	install -Dt "${OUTPUT_DIR}/bin" speedtest-go
 }

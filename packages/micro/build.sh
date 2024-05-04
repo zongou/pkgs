@@ -8,7 +8,7 @@ PKG_BASENAME=micro-${PKG_VERSION}
 PKG_SRCURL=https://github.com/zyedidia/micro/archive/refs/tags/v${PKG_VERSION}${PKG_EXTNAME}
 
 build() {
-	setup_go_toolchain
+	setup_golang
 	# VERSION=$(GOOS=$(go env GOHOSTOS) GOARCH=$(go env GOHOSTARCH) go run tools/build-version.go)
 	VERSION=${PKG_VERSION}
 	# HASH=$(git rev-parse --short HEAD)
