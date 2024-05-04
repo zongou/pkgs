@@ -41,7 +41,7 @@ depends() {
 
 build() {
 	setup_rust
-	export RUSTFLAGS="-C link-arg=-s -C opt-level=s -C lto=true"
+	export RUSTFLAGS="-C link-arg=-s -C opt-level=s"
 	cargo build --jobs "${JOBS}" --release
 	install "target/${CARGO_BUILD_TARGET}/release/${PKG_NAME}" -D "${OUTPUT_DIR}/bin/${PKG_NAME}"
 }
