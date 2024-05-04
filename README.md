@@ -2,7 +2,7 @@
 
 My package build scripts
 
-Feats:
+Features:
 
 - Build with NDK
 - Statically linked binaries oriented.
