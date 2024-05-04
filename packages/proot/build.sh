@@ -3,7 +3,7 @@
 PKG_HOMEPAGE=https://proot-me.github.io/
 PKG_DESCRIPTION="Emulate chroot, bind mount and binfmt_misc for non-root users"
 PKG_LICENSE="GPL-2.0"
-PKG_MAINTAINER="Michal Bednarski @michalbednarski"
+
 # Just bump commit and version when needed:
 
 PKG_VERSION=5.1.107

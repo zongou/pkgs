@@ -10,7 +10,7 @@ PKG_SRCURL=https://ftp.gnu.org/gnu/tar/${PKG_BASENAME}${PKG_EXTNAME}
 configure() {
 	API=28
 	setup_ndk_toolchain
-	
+
 	# When cross-compiling configure guesses that d_ino in struct dirent only exists
 	# if triplet matches linux*-gnu*, so we force set it explicitly:
 	PKG_EXTNAMERA_CONFIGURE_ARGS="gl_cv_struct_dirent_d_ino=yes"

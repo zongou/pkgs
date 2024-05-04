@@ -19,7 +19,6 @@ PKG_AUTO_UPDATE=false
 PKG_DEPENDS="ncurses, libevent, libandroid-support, libandroid-glob"
 # Set default TERM to screen-256color, see: https://raw.githubusercontent.com/tmux/tmux/3.3/CHANGES
 PKG_EXTRA_CONFIGURE_ARGS="--disable-static --with-TERM=screen-256color"
-PKG_BUILD_IN_SRC=true
 
 PKG_CONFFILES="etc/tmux.conf etc/profile.d/tmux.sh"
 

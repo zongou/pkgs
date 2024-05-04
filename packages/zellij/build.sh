@@ -1,7 +1,6 @@
 PKG_HOMEPAGE="https://zellij.dev/"
 PKG_DESCRIPTION="A terminal workspace with batteries included"
 PKG_LICENSE="MIT"
-PKG_MAINTAINER="Jonathan Lei <me@xjonathan.dev>"
 
 PKG_VERSION="0.40.0"
 PKG_BASENAME=zellij-${PKG_VERSION}
@@ -9,8 +8,6 @@ PKG_EXTNAME=.tar.gz
 PKG_SRCURL="https://github.com/zellij-org/zellij/archive/refs/tags/v${PKG_VERSION}.tar.gz"
 PKG_SHA256=afb15afce6e37f850aff28a3a6b08abd78ef26a1c9fa3ed39426ef0853154438
 PKG_BUILD_DEPENDS="zlib"
-PKG_BUILD_IN_SRC=true
-PKG_AUTO_UPDATE=true
 
 # # wasmer doesn't support these platforms yet
 # PKG_BLACKLISTED_ARCHES="arm, i686"
@@ -43,5 +40,5 @@ depends() {
 
 build() {
 	setup_rust
-	cargo build --jobs "${JOBS}" --release
+	cargo build --jobs "${JOBS}" --target="${CARGO_BUILD_TARGET}" --release
 }

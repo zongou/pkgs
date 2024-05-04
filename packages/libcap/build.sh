@@ -2,7 +2,6 @@ PKG_HOMEPAGE=https://sites.google.com/site/fullycapable/
 PKG_DESCRIPTION="POSIX 1003.1e capabilities"
 PKG_LICENSE="BSD 3-Clause, GPL-2.0"
 PKG_LICENSE_FILE="License"
-PKG_MAINTAINER="@termux"
 
 PKG_VERSION=2.69
 PKG_BASENAME=libcap-${PKG_VERSION}
@@ -12,7 +11,6 @@ PKG_SHA256=f311f8f3dad84699d0566d1d6f7ec943a9298b28f714cae3c931dfd57492d7eb
 PKG_DEPENDS="attr"
 PKG_BREAKS="libcap-dev"
 PKG_REPLACES="libcap-dev"
-PKG_BUILD_IN_SRC=true
 
 depends() {
 	echo attr

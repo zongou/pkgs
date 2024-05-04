@@ -1,7 +1,7 @@
 PKG_HOMEPAGE="https://tiswww.case.edu/php/chet/readline/rltop.html"
 PKG_DESCRIPTION="Library that allow users to edit command lines as they are typed in"
 PKG_LICENSE="GPL-3.0"
-PKG_MAINTAINER="@termux"
+
 PKG_DEPENDS="libandroid-support, ncurses"
 PKG_BREAKS="bash (<< 5.0), readline-dev"
 PKG_REPLACES="readline-dev"

@@ -8,7 +8,7 @@ PKG_BASENAME=${PKG_NAME}-${PKG_VERSION}-src
 PKG_EXTNAME=.tar.xz
 PKG_SRCURL=https://github.com/upx/upx/releases/download/v${PKG_VERSION}/upx-${PKG_VERSION}-src.tar.xz
 PKG_SHA256=d6357eec6ed4c1b51f40af2316b0958ff1b7fa6f53ef3de12da1d5c96d30e412
-PKG_AUTO_UPDATE=true
+
 PKG_DEPENDS="libc++"
 
 configure() {
