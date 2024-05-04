@@ -8,6 +8,7 @@ PKG_EXTNAME=.tar.gz
 PKG_SRCURL="https://github.com/zellij-org/zellij/archive/refs/tags/v${PKG_VERSION}.tar.gz"
 PKG_SHA256=afb15afce6e37f850aff28a3a6b08abd78ef26a1c9fa3ed39426ef0853154438
 PKG_BUILD_DEPENDS="zlib"
+PKG_NAME=zellij
 
 # # wasmer doesn't support these platforms yet
 # PKG_BLACKLISTED_ARCHES="arm, i686"
@@ -40,5 +41,7 @@ depends() {
 
 build() {
 	setup_rust
-	cargo build --jobs "${JOBS}" --target="${CARGO_BUILD_TARGET}" --release
+	export RUSTFLAGS="-C link-arg=-s -C opt-level=s -C lto=true"
+	cargo build --jobs "${JOBS}" --release
+	install "target/${CARGO_BUILD_TARGET}/release/${PKG_NAME}" -D "${OUTPUT_DIR}/bin/${PKG_NAME}"
 }
