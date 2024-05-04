@@ -94,7 +94,7 @@ setup_rust() {
     fi
 }
 
-prepare_depends() {
+build_depends() {
     if command -v depends >/dev/null; then
         depends | while read -r dependency; do
             ## If depeds is not unset, subshell will has the same depends and cause dead loop.
@@ -121,6 +121,26 @@ prepare_depends() {
 }
 
 build_packages() {
+    (
+        msg "Building package ${package} for ${ABI} ..."
+        # shellcheck disable=SC2034
+        PKG_CONFIG_DIR="${WORK_DIR}/packages/${package}"
+        # shellcheck disable=SC1090
+        . "${WORK_DIR}/packages/${package}/build.sh"
+        build_depends
+
+        (
+            prepare_source
+            for func in configure build; do
+                if command -v "${func}" >/dev/null; then
+                    ("${func}")
+                fi
+            done
+        )
+    )
+}
+
+main() {
     API=${API-24}
     ABI=${ABI-aarch64-linux-android}
     TARGET="${TARGET-${ABI}${API}}"
@@ -135,24 +155,8 @@ build_packages() {
     setup_ndk_toolchain
 
     for package in "$@"; do
-        (
-            msg "Building package ${package} for ${ABI} ..."
-            # shellcheck disable=SC2034
-            PKG_CONFIG_DIR="${WORK_DIR}/packages/${package}"
-            # shellcheck disable=SC1090
-            . "${WORK_DIR}/packages/${package}/build.sh"
-            prepare_depends
-
-            (
-                prepare_source
-                for func in configure build; do
-                    if command -v "${func}" >/dev/null; then
-                        ("${func}")
-                    fi
-                done
-            )
-        )
+        build_packages "${package}"
     done
 }
 
-build_packages "$@"
+main "$@"

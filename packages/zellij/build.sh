@@ -37,10 +37,11 @@ PKG_AUTO_UPDATE=true
 # 	EOF
 # }
 
-depends(){
+depends() {
 	echo "zlib"
 }
 
-build(){
+build() {
 	setup_rust
+	cargo build --jobs "${JOBS}" --release
 }
