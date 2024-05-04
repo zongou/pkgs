@@ -59,7 +59,7 @@ setup_ndk_toolchain() {
     export FORCE_UNSAFE_CONFIGURE=1
 }
 
-setup_go_toolchain() {
+setup_golang() {
     case "${ABI}" in
     *-linux-android*)
         export CGO_ENABLED=1 GOOS=android
@@ -74,7 +74,7 @@ setup_go_toolchain() {
 }
 
 ## Common rust android target: [aarch64-linux-android, x86_64-linux-android, armv7-linux-androideabi, i686-linux-android]
-setup_rust_toolchain() {
+setup_rust() {
     CARGO_BUILD_TARGET="$(echo "${ABI}" | sed 's/armv7a/armv7/')"
     export CARGO_BUILD_TARGET
 

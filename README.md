@@ -110,7 +110,7 @@ build(){
     # make -j"${JOBS}" install
 
     ## Build a go package
-    # setup_go_toolchain
+    # setup_golang
     # go build -ldflags="-w -s -X main.Version=${PKG_VERSION}"
 }
 ```
