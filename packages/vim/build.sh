@@ -106,6 +106,14 @@ depends() {
 }
 
 configure() {
+	API=26 setup_ndk_toolchain
+	patch -up1 <"${PKG_CONFIG_DIR}/vterm_internal.h.patch"
+	sed -i "1i#include \"/media/user/RD20/programs/android-ndk-r26d/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/pwd.h\"" src/misc1.c
+
+	STATIC_FLAGS="-static"
+	export CFLAGS="-Os -ffunction-sections -fdata-sections -fno-unwind-tables -fno-asynchronous-unwind-tables ${STATIC_FLAGS+${STATIC_FLAGS}}"
+	export LDFLAGS="-Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections ${STATIC_FLAGS+${STATIC_FLAGS}}"
+
 	./configure CFLAGS="${CFLAGS+${CFLAGS}} -I${OUTPUT_DIR}/include" LDFLAGS="${LDFLAGS+${LDFLAGS}} -L${OUTPUT_DIR}/lib" \
 		--host="${TARGET}" --prefix="${OUTPUT_DIR}" \
 		--disable-nls \
