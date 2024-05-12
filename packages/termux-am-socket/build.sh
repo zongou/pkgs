@@ -22,7 +22,7 @@ PKG_DEPENDS="libc++"
 
 configure() {
 	export LDFLAGS="-w -s"
-	export TERMUX_APP_PACKAGE=com.myterm
+	export TERMUX_APP_PACKAGE=my.term
 	export TERMUX_APPS_DIR=/data/data/${TERMUX_APP_PACKAGE}/files/apps
 
 	rm -rf build && mkdir build && cd build
