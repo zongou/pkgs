@@ -107,11 +107,14 @@ depends() {
 
 configure() {
 	ls
-	make
 	# ./configure CFLAGS="$CFLAGS -I$prefix/include" LDFLAGS="$LDFLAGS -L$prefix/lib" \
 	# --host=$target_host --target="${TARGET}" \
 
-	./configure --host="${TARGET}" --prefix="${OUTPUT_DIR}" \
+	export GCC="${CC}"
+	export GXX="${CXX}"
+
+	./configure CFLAGS="${CFLAGS+${CFLAGS}} -I${OUTPUT_DIR}/include" LDFLAGS="${LDFLAGS+${LDFLAGS}} -L${OUTPUT_DIR}/lib" \
+		--host="${TARGET}" --prefix="${OUTPUT_DIR}" \
 		--disable-nls \
 		--with-tlib=ncursesw \
 		--without-x \
@@ -129,5 +132,6 @@ configure() {
 		vim_cv_toupper_broken=no \
 		vim_cv_tty_group=world
 
-	make install -j"${JOBS}"
+	make -j"${JOBS}" install
+	file src/vim
 }
