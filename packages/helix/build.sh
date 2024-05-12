@@ -1,7 +1,6 @@
 PKG_HOMEPAGE="https://helix-editor.com/"
 PKG_DESCRIPTION="A post-modern modal text editor written in rust"
 PKG_LICENSE="MPL-2.0"
-PKG_MAINTAINER="Aditya Alok <alok@termux.org>"
 
 PKG_VERSION="24.03"
 PKG_NAME=helix
