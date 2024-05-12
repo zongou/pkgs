@@ -39,5 +39,13 @@ build() {
 	setup_rust
 	export RUSTFLAGS="-C link-arg=-s -C opt-level=s -C lto=true"
 	cargo build --release
-	install "target/${CARGO_BUILD_TARGET}/release/${PKG_NAME}" -D "${OUTPUT_DIR}/bin/${PKG_NAME}"
+
+	DATA_DIR=${OUTPUT_DIR}/lib/helix
+	mkdir -p "${DATA_DIR}"
+
+	install "target/${CARGO_BUILD_TARGET}/release/${PKG_NAME}" -D "${DATA_DIR}/${PKG_NAME}"
+	cp -r runtime "${DATA_DIR}/runtime"
+	rm -rf "${DATA_DIR}/runtime/grammars/sources"
+	mkdir -p "${OUTPUT_DIR}/bin/"
+	ln -snf ../lib/helix/hx "${OUTPUT_DIR}/bin/hx"
 }
