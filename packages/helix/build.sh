@@ -3,8 +3,8 @@ PKG_DESCRIPTION="A post-modern modal text editor written in rust"
 PKG_LICENSE="MPL-2.0"
 
 PKG_VERSION="24.03"
-PKG_NAME=helix
-PKG_BASENAME=${PKG_NAME}-${PKG_VERSION}
+PKG_NAME=hx
+PKG_BASENAME=helix-${PKG_VERSION}
 PKG_EXTNAME=.tar.gz
 PKG_SRCURL=https://github.com/helix-editor/helix/archive/refs/tags/${PKG_VERSION}.tar.gz
 PKG_GIT_BRANCH="${PKG_VERSION}"
