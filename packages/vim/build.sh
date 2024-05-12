@@ -106,13 +106,6 @@ depends() {
 }
 
 configure() {
-	ls
-	# ./configure CFLAGS="$CFLAGS -I$prefix/include" LDFLAGS="$LDFLAGS -L$prefix/lib" \
-	# --host=$target_host --target="${TARGET}" \
-
-	export GCC="${CC}"
-	export GXX="${CXX}"
-
 	./configure CFLAGS="${CFLAGS+${CFLAGS}} -I${OUTPUT_DIR}/include" LDFLAGS="${LDFLAGS+${LDFLAGS}} -L${OUTPUT_DIR}/lib" \
 		--host="${TARGET}" --prefix="${OUTPUT_DIR}" \
 		--disable-nls \
