@@ -113,7 +113,7 @@ prepare_source(){
 configure(){
     ## Custom API
     # export API=28
-    # setup_ndk_toolchain
+    # setup_target_toolchain
 
     ## Autoconf
     # ./configure --host="${TARGET}" --prefix="${OUTPUT_DIR}"

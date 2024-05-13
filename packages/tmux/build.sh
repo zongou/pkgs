@@ -77,7 +77,7 @@ depends() {
 configure() {
 	# langinfo requires API >= 26
 	API=28
-	setup_ndk_toolchain
+	setup_target_toolchain
 
 	patch -up1 <"${PKG_CONFIG_DIR}/configure.ac.patch"
 	./autogen.sh

@@ -105,7 +105,7 @@ depends() {
 }
 
 configure() {
-	API=26 setup_ndk_toolchain
+	API=26 setup_target_toolchain
 	# patch -up1 <"${PKG_CONFIG_DIR}/vterm_internal.h.patch"
 	# sed -i "1i#include \"/media/user/RD20/programs/android-ndk-r26d/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/pwd.h\"" src/misc1.c
 

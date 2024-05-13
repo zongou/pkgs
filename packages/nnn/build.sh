@@ -25,7 +25,7 @@ depends() {
 
 build() {
 	API=26
-	setup_ndk_toolchain
+	setup_target_toolchain
 
 	## Add to toolchain search dirs
 	export CFLAGS="-I${OUTPUT_DIR}/include "

@@ -32,7 +32,7 @@ prepare_source() {
 }
 
 ## Common android ABI: [aarch64-linux-android, armv7a-linux-androideabi, x86_64-linux-android, i686-linux-android]
-setup_ndk_toolchain() {
+setup_target_toolchain() {
     if ! test "${TOOLCHAIN+1}"; then
         if test "${ANDROID_NDK_HOME+1}"; then
             TOOLCHAIN="${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64"
@@ -57,6 +57,10 @@ setup_ndk_toolchain() {
 
     ## autoconf in PRoot enviroment
     export FORCE_UNSAFE_CONFIGURE=1
+}
+
+setup_zig_toolchain(){
+    CC="zig cc --target=${TARGET}"
 }
 
 setup_golang() {
@@ -132,7 +136,7 @@ build_packages() {
     export OUTPUT_DIR
     mkdir -p "${OUTPUT_DIR}"
 
-    setup_ndk_toolchain
+    setup_target_toolchain
 
     for package in "$@"; do
         (
