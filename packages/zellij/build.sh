@@ -2,7 +2,7 @@ PKG_HOMEPAGE="https://zellij.dev/"
 PKG_DESCRIPTION="A terminal workspace with batteries included"
 PKG_LICENSE="MIT"
 
-PKG_VERSION="0.40.0"
+PKG_VERSION="0.40.1"
 PKG_BASENAME=zellij-${PKG_VERSION}
 PKG_EXTNAME=.tar.gz
 PKG_SRCURL="https://github.com/zellij-org/zellij/archive/refs/tags/v${PKG_VERSION}.tar.gz"
