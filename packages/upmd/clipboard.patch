@@ -1,0 +1,35 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index f913d6f..8821313 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -100,8 +100,7 @@ dependencies = [
+ [[package]]
+ name = "arboard"
+ version = "3.6.1"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "0348a1c054491f4bfe6ab86a7b6ab1e44e45d899005de92f58b3df180b36ddaf"
++source = "git+https://github.com/iced-mobile/arboard?rev=0c813aba1b961a06c2d0a882c1e1eaba8a0ab766#0c813aba1b961a06c2d0a882c1e1eaba8a0ab766"
+ dependencies = [
+  "clipboard-win",
+  "image",
+diff --git a/Cargo.toml b/Cargo.toml
+index 4d144ef..b72efef 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -25,6 +25,7 @@ members = [
+ 
+ [patch.crates-io]
+ vt100 = { git = "https://github.com/rezigned/vt100-rust", rev = "8a35571e9066436691ff52054f2f5425e22bd902" }
++arboard = { git = "https://github.com/iced-mobile/arboard", rev = "0c813aba1b961a06c2d0a882c1e1eaba8a0ab766" }
+ 
+ # Config for 'dist'
+ [workspace.metadata.dist]
+@@ -92,5 +93,6 @@ codegen-units = 1
+ strip = "symbols"
+ panic = "abort"
+ 
+-# [profile.release]
++[profile.release]
+ # debug = true
++opt-level = "z"
+\ No newline at end of file

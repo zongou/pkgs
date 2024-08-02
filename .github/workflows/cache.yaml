@@ -1,0 +1,43 @@
+name: Caching example
+run-name: "Caching example: ${{github.event.head_commit.message}}"
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/cache.yaml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Restore cached data
+      id: cache-data-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: |
+          filea
+          fileb
+        key: ${{ runner.os }}-data_test
+    
+    - name: Create data if Restoring cache missed
+      id: cache-data-create
+      if: steps.cache-data-restore.outputs.cache-hit != 'true'
+      run: |
+        echo "Hello" > filea
+        echo "World" > fileb
+    
+    - name: Save data
+      id: cache-data-save
+      if: steps.cache-data-restore.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: |
+          filea
+          fileb
+        key: ${{ steps.cache-data-restore.outputs.cache-primary-key }}
+
+    - name: Print data
+      run: |
+        cat filea fileb

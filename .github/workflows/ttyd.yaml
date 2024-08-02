@@ -1,0 +1,72 @@
+name: ttyd
+on:
+  workflow_dispatch:
+  push:
+    paths: .github/workflows/ttyd.yaml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Zig
+        uses: goto-bus-stop/setup-zig@v2.2.0
+        with:
+          version: 0.13.0
+          cache: true
+
+      # - name: Run sshx
+      #   run: |
+      #     curl -sSf https://sshx.io/get | sh -s run
+
+      # - name: Debugging with tmate
+      #   uses: mxschmitt/action-tmate@v3.18
+
+      - name: Prepare environment
+        run: |
+          # curl -Lk https://github.com/ekzhang/bore/releases/download/v0.5.1/bore-v0.5.1-x86_64-unknown-linux-musl.tar.gz | gzip -d | tar -x
+          # sudo mv bore /usr/local/bin
+          # bore --version
+          # # bore local 7681 --to bore.pub
+
+          curl -Lk https://github.com/cloudflare/cloudflared/releases/download/2024.8.2/cloudflared-fips-linux-amd64 > cloudflared
+          chmod +x cloudflared
+          sudo mv cloudflared /usr/local/bin
+          cloudflared --version
+
+          helix_vesion=24.07
+          helix_url=https://github.com/helix-editor/helix/releases/download/${helix_vesion}/helix-${helix_vesion}-x86_64-linux.tar.xz
+          curl -L ${helix_url} | xz -d | tar -C /opt -x
+          ln -snf /opt/helix-${helix_vesion}-x86_64-linux/hx /usr/local/bin/hx
+          hx --version
+
+          # curl -Lk https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 > ttyd
+          curl -Lk https://github.com/zongou/ttyd/releases/download/1.7.7/ttyd-x86_64-linux-musl > ttyd
+          chmod +x ttyd
+          sudo mv ttyd /usr/local/bin
+          ttyd --version
+          # ttyd -t enableZmodem=true -t enableTrzsz=true -t enableSixel=true --writable bash -l
+
+          curl -Lk https://github.com/mvdan/sh/releases/download/v3.8.0/shfmt_v3.8.0_linux_amd64 > shfmt
+          chmod +x shfmt
+          sudo mv shfmt /usr/local/bin
+          shfmt --version
+
+      - name: Start ttyd
+        run: |
+          cat <<EOF >d
+          export CHARSET=\${CHARSET:-UTF-8}
+          export LANG=\${LANG:-C.UTF-8}
+          export LC_COLLATE=\${LC_COLLATE:-C}
+          export TERM=xterm-256color
+          export COLORTERM=truecolor
+          EOF
+          sudo mv d /etc/profile.d/my_profile.sh
+
+          sudo apt update
+          sudo apt install -y micro lrzsz
+          ttyd -t enableZmodem=true -t enableTrzsz=true -t enableSixel=true --writable bash -l &
+          cloudflared tunnel --url localhost:7681

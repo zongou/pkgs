@@ -1,0 +1,5 @@
+build
+output
+sources
+wrappers/android/OUTPUT_DIR
+wrappers/android/resource

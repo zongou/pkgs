@@ -1,0 +1,21 @@
+diff --git a/src/libbase/properties.cpp b/src/libbase/properties.cpp
+index 6d48ab8..6578468 100644
+--- a/src/libbase/properties.cpp
++++ b/src/libbase/properties.cpp
+@@ -51,16 +51,6 @@ int __system_property_set(const char* key, const char* value) {
+   return 0;
+ }
+ 
+-int __system_property_get(const char* key, char* value) {
+-  auto it = g_properties.find(key);
+-  if (it == g_properties.end()) {
+-    *value = '\0';
+-    return 0;
+-  }
+-  snprintf(value, PROP_VALUE_MAX, "%s", it->second.c_str());
+-  return strlen(value);
+-}
+-
+ namespace android {
+ namespace base {
+ 

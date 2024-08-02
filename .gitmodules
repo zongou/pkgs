@@ -1,0 +1,3 @@
+[submodule "tools/zig-as-llvm"]
+	path = tools/zig-as-llvm
+	url = https://github.com/zongou/zig-as-llvm
