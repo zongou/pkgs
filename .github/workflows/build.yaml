@@ -1,0 +1,45 @@
+name: Build Package
+run-name: Build ${{ inputs.package }}
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "packge:"
+        default: "proot"
+        required: true
+      target:
+        description: "target:"
+        default: aarch64-linux-android24
+        required: true
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Setup build environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build
+
+      - name: Build ${{inputs.package}}
+        env:
+          TARGET: ${{inputs.target}}
+        run: |
+          ./build-package.sh ${{inputs.package}}
+
+      - name: Archive
+        run: |
+          tar -cv ./output | xz -T0 > ${{inputs.package}}.tar.xz
+
+      - name: Upload
+        uses: actions/upload-artifact@main
+        with:
+          name: upload
+          path: ${{inputs.package}}.tar.xz

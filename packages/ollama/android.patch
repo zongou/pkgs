@@ -1,0 +1,73 @@
+From eb76f3e37993ab0c7d1c0d1c361245e1597690aa Mon Sep 17 00:00:00 2001
+From: Self Denial <selfdenial@pm.me>
+Date: Mon, 15 Jan 2024 02:37:44 -0700
+Subject: [PATCH 1/2] Fix CPU-only build under Android Termux enviornment.
+
+Update gpu.go initGPUHandles() to declare gpuHandles variable before
+reading it. This resolves an "invalid memory address or nil pointer
+dereference" error.
+
+Update dyn_ext_server.c to avoid setting the RTLD_DEEPBIND flag under
+__TERMUX__ (Android).
+---
+ gpu/gpu.go           | 2 +-
+ llm/dyn_ext_server.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/gpu/gpu.go b/gpu/gpu.go
+index 4cfede8df5..451b7557ad 100644
+--- a/gpu/gpu.go
++++ b/gpu/gpu.go
+@@ -63,6 +63,7 @@ func initGPUHandles() {
+ 
+ 	// TODO - if the ollama build is CPU only, don't do these checks as they're irrelevant and confusing
+ 
++	gpuHandles = &handles{nil, nil}
+ 	var cudaMgmtName string
+ 	var cudaMgmtPatterns []string
+ 	var rocmMgmtName string
+@@ -87,7 +88,6 @@ func initGPUHandles() {
+ 	}
+ 
+ 	slog.Info("Detecting GPU type")
+-	gpuHandles = &handles{nil, nil}
+ 	cudaLibPaths := FindGPULibs(cudaMgmtName, cudaMgmtPatterns)
+ 	if len(cudaLibPaths) > 0 {
+ 		cuda := LoadCUDAMgmt(cudaLibPaths)
+diff --git a/llm/dyn_ext_server.c b/llm/dyn_ext_server.c
+index e9aa3481fa..5807ca6327 100644
+--- a/llm/dyn_ext_server.c
++++ b/llm/dyn_ext_server.c
+@@ -3,7 +3,7 @@
+ #include <stdio.h>
+ #include <string.h>
+ 
+-#ifdef __linux__
++#if defined(__linux__) && !defined(__TERMUX__)
+ #include <dlfcn.h>
+ #define LOAD_LIBRARY(lib, flags) dlopen(lib, flags)
+ #define LOAD_SYMBOL(handle, sym) dlsym(handle, sym)
+
+From 344342abdf41c97ddcf3ace2d562e2ff0a5af1f3 Mon Sep 17 00:00:00 2001
+From: Self Denial <selfdenial@pm.me>
+Date: Thu, 18 Jan 2024 17:30:42 -0700
+Subject: [PATCH 2/2] Restore dyn_ext_server.c since RTLD_DEEPBIND has been
+ removed
+
+---
+ llm/dyn_ext_server.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/llm/dyn_ext_server.c b/llm/dyn_ext_server.c
+index 5807ca6327..e9aa3481fa 100644
+--- a/llm/dyn_ext_server.c
++++ b/llm/dyn_ext_server.c
+@@ -3,7 +3,7 @@
+ #include <stdio.h>
+ #include <string.h>
+ 
+-#if defined(__linux__) && !defined(__TERMUX__)
++#ifdef __linux__
+ #include <dlfcn.h>
+ #define LOAD_LIBRARY(lib, flags) dlopen(lib, flags)
+ #define LOAD_SYMBOL(handle, sym) dlsym(handle, sym)
