@@ -1,0 +1,121 @@
+# Android SDK version must be at least 24 (Android 7.0)
+
+## configure script
+# ld: error: undefined symbol: android_getCpuFeatures
+# >>> referenced by cpu_features.c# Use API28 or disable the test in ../../test/cctest/test_crypto_clienthello.cc
+# ../../test/cctest/test_crypto_clienthello.cc:57:40: error: use of undeclared identifier 'aligned_alloc'
+# alloc_base = static_cast<uint8_t*>(aligned_alloc(page, 2 * page));
+# https://github.com/android/ndk/issues/1339#issuecomment-676811636
+
+# >>>               zlib.cpu_features.o:(_cpu_check_features) in archive obj/deps/zlib/libzlib.a
+
+# Use API28 or disable the test in ../../test/cctest/test_crypto_clienthello.cc
+# ../../test/cctest/test_crypto_clienthello.cc:57:40: error: use of undeclared identifier 'aligned_alloc'
+# alloc_base = static_cast<uint8_t*>(aligned_alloc(page, 2 * page));
+# https://github.com/android/ndk/issues/1339#issuecomment-676811636
+
+PKG_HOMEPAGE=https://nodejs.org/
+PKG_DESCRIPTION="Open Source, cross-platform JavaScript runtime environment"
+PKG_LICENSE="MIT"
+PKG_MAINTAINER="Yaksh Bariya <thunder-coding@termux.dev>"
+# PKG_VERSION=22.2.0
+# PKG_VERSION=21.6.2
+# PKG_VERSION=20.11.0
+PKG_VERSION=20.14.0
+PKG_REVISION=2
+# PKG_SRCURL=https://nodejs.org/dist/v${PKG_VERSION}/node-v${PKG_VERSION}.tar.xz
+PKG_SRCURL=https://github.com/nodejs/node/archive/refs/tags/v${PKG_VERSION}.tar.gz
+PKG_SHA256=191294d445d1e6800359acc8174529b1e18e102147dc5f596030d3dce96931e5
+# thunder-coding: don't try to autoupdate nodejs, that thing takes 2 whole hours to build for a single arch, and requires a lot of patch updates everytime. Also I run tests everytime I update it to ensure least bugs
+PKG_AUTO_UPDATE=false
+# Note that we do not use a shared libuv to avoid an issue with the Android
+# linker, which does not use symbols of linked shared libraries when resolving
+# symbols on dlopen(). See https://github.com/termux/termux-packages/issues/462.
+PKG_CONFLICTS="nodejs-lts, nodejs-current"
+PKG_BREAKS="nodejs-dev"
+PKG_REPLACES="nodejs-current, nodejs-dev"
+PKG_SUGGESTS="clang, make, pkg-config, python"
+PKG_RM_AFTER_INSTALL="lib/node_modules/npm/html lib/node_modules/npm/make.bat share/systemtap lib/dtrace"
+PKG_BUILD_IN_SRC=true
+PKG_HOSTBUILD=true
+
+# PKG_DEPENDS="libc++, openssl, c-ares, libicu, zlib"
+PKG_BASENAME=node-${PKG_VERSION}
+
+patch_source() {
+	# build with ninja patch
+	patch --strip=1 --no-backup-if-mismatch -t <"${PKG_CONFIG_DIR}/build_with_ninja.patch"
+	# sudo apt install ninja-build
+
+	# g++: error: unrecognized command line option ‘-msign-return-address=all’
+	sed -i "s|o\['cflags'\]+=\['-msign-return-address=all'\]|warn('-msign-return-address=all no longer exists!')|" configure.py
+
+	# g++: error: unrecognized command-line option ‘-mbranch-protection=standard’
+	sed -i "s^-mbranch-protection=standard^^" node.gyp
+
+	# ../deps/zlib/cpu_features.c:43:10: fatal error: 'cpu-features.h' file not found
+	if test -f ./deps/zlib/cpu_features.c; then
+		sed -i 's:#include <cpu-features.h>:#include "cpu-features.c":' ./deps/zlib/cpu_features.c
+	fi
+
+	if test "${ANDROID_API}" -lt 28; then
+		# ../deps/v8/src/base/debug/stack_trace_posix.cc:156:9: error: use of undeclared identifier 'backtrace_symbols'
+		echo >test/cctest/test_crypto_clienthello.cc
+	fi
+
+	# ninja: error: '../../deps/uv/src/unix/pthread-fixes.c', needed by 'obj.host/deps/uv/src/unix/libuv.pthread-fixes.o', missing and no known rule to make it
+	if grep -q "android: remove pthread-fixes.c" deps/uv/ChangeLog; then
+		if grep -q "'src/unix/pthread-fixes.c'" ./deps/uv/uv.gyp; then
+			sed -i "s|'src/unix/pthread-fixes.c',|# 'src/unix/pthread-fixes.c',|" ./deps/uv/uv.gyp
+		fi
+	fi
+}
+
+configure() {
+	patch_source
+	case "${TARGET}" in
+	aarch64-*) DEST_CPU="arm64" ;;
+	armv7a-*) DEST_CPU="arm" ;;
+	x86_64-*) DEST_CPU="x64" ;;
+	i686-*) DEST_CPU="ia32" ;;
+	*)
+		msg "Invalid target architecture, must be one of: arm, arm64, aarch64, x86, x86_64"
+		exit 1
+		;;
+	esac
+
+	# export GYP_DEFINES="\
+	# 	host_os=linux \
+	# 	android_ndk_path=${ANDROID_NDK_HOME}"
+
+	export GYP_DEFINES="\
+    target_arch=${DEST_CPU} \
+    v8_target_arch=${DEST_CPU} \
+    android_target_arch=${DEST_CPU} \
+    host_os=linux \
+    OS=android \
+    android_ndk_path=${ANDROID_NDK_HOME}"
+	export CC_host=gcc
+	export CXX_host=g++
+	export LINK_host=g++
+
+	# See note above PKG_DEPENDS why we do not use a shared libuv.
+	# When building with ninja, build.ninja is generated for both Debug and Release builds.
+	./configure \
+		--prefix="${OUTPUT_DIR}" \
+		--dest-cpu="${DEST_CPU}" \
+		--dest-os=android \
+		--cross-compiling \
+		--openssl-no-asm \
+		--partly-static \
+		--ninja
+}
+
+build() {
+	# make -j"${JOBS}"
+	ninja -C out/Release -j"${JOBS}"
+	# python3 tools/install.py install "" "${OUTPUT_DIR}" out/Release
+	# python3 tools/install.py install "${OUTPUT_DIR}" ""
+	# python3 tools/install.py install --dest-dir="" --prefix "${OUTPUT_DIR}" --build-dir "$_BUILD_DIR"
+	python3 tools/install.py install --dest-dir="" --prefix "${OUTPUT_DIR}"
+}
