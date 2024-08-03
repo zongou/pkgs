@@ -8,7 +8,7 @@ PKG_EXTNAME=.tar.bz2
 PKG_SRCURL=https://busybox.net/downloads/${PKG_BASENAME}${PKG_EXTNAME}
 
 configure() {
-	cp "${PKG_CONFIG_DIR}/config.optmized" .config
+	cp "${PKG_CONFIG_DIR}/optmized.config" .config
 
 	## shell: fix SIGWINCH and SIGCHLD (in hush) interrupting line input
 	## https://github.com/mirror/busybox/commit/93e0898c663a533082b5f3c2e7dcce93ec47076d
