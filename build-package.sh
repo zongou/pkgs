@@ -93,7 +93,7 @@ setup_golang() {
 setup_rust() {
 	case "${TARGET}" in
 	*-linux-android*)
-		CARGO_BUILD_TARGET="$(echo "${ABI}" | sed 's/armv7a/armv7/')"
+		CARGO_BUILD_TARGET="$(echo "${ANDROID_ABI}" | sed 's/armv7a/armv7/')"
 		export CARGO_BUILD_TARGET
 		;;
 	aarch64-linux-musl)
