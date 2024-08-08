@@ -3,10 +3,17 @@ set -eu
 
 msg() { printf '%s\n' "$*" >&2; }
 
+<<<<<<< HEAD
 ROOT_DIR="$(dirname "$(realpath "$0")")"
 export GO_BUILD_DIR="${ROOT_DIR}/build/go"
 export RUST_BUILD_DIR="${ROOT_DIR}/build/rust"
 SRCS_DIR="${ROOT_DIR}/sources"
+=======
+ROOTDIR="$(dirname "$(realpath "$0")")"
+export GO_BUILD_DIR="${ROOTDIR}/build/go"
+export RUST_BUILD_DIR="${ROOTDIR}/build/rust"
+SRCS_DIR="${ROOTDIR}/sources"
+>>>>>>> fc032b7 (update)
 mkdir -p "${SRCS_DIR}"
 # shellcheck disable=SC2155
 export JOBS="$(nproc --all)"
@@ -20,8 +27,13 @@ setup_target() {
 			export ANDROID_ABI ANDROID_API
 			TOOLCHAIN="${TOOLCHAIN-${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64}"
 
+<<<<<<< HEAD
 			BUILD_PREFIX="${BUILD_PREFIX-${ROOT_DIR}/build/${ANDROID_ABI}}"
 			OUTPUT_DIR="${ROOT_DIR}/output/${ANDROID_ABI}"
+=======
+			BUILD_PREFIX="${BUILD_PREFIX-${ROOTDIR}/build/${ANDROID_ABI}}"
+			OUTPUT_DIR="${ROOTDIR}/output/${ANDROID_ABI}"
+>>>>>>> fc032b7 (update)
 
 			export CC="${CC-${TOOLCHAIN}/bin/${TARGET}-clang}"
 			export CXX="${CXX-${TOOLCHAIN}/bin/${TARGET}-clang++}"
@@ -162,7 +174,11 @@ setup_depends() {
 			(
 				unset -f check
 				# shellcheck disable=SC1090
+<<<<<<< HEAD
 				. "${ROOT_DIR}/packages/${package}/build.sh"
+=======
+				. "${ROOTDIR}/packages/${package}/build.sh"
+>>>>>>> fc032b7 (update)
 				if command -v check >/dev/null && ! check; then
 					build_package "${package}"
 				fi
@@ -175,12 +191,20 @@ setup_depends() {
 build_package() {
 	(
 		package="$1"
+<<<<<<< HEAD
 		PKG_CONFIG_DIR="${ROOT_DIR}/packages/${package}"
+=======
+		PKG_CONFIG_DIR="${ROOTDIR}/packages/${package}"
+>>>>>>> fc032b7 (update)
 		export PKG_CONFIG_DIR
 		unset BUILD_PREFIX PKG_DEPENDS
 		msg "Building package '${package}'"
 		# shellcheck disable=SC1090
+<<<<<<< HEAD
 		. "${ROOT_DIR}/packages/${package}/build.sh"
+=======
+		. "${ROOTDIR}/packages/${package}/build.sh"
+>>>>>>> fc032b7 (update)
 		for step in setup_target setup_depends setup_source configure build; do
 			if command -v "${step}" >/dev/null; then
 				"${step}"

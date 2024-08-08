@@ -1,5 +1,9 @@
 PKG_HOMEPAGE="https://zellij.dev/"
+<<<<<<< HEAD
 PKG_DESCRIPTION="A terminal ROOT_DIR with batteries included"
+=======
+PKG_DESCRIPTION="A terminal ROOTDIR with batteries included"
+>>>>>>> fc032b7 (update)
 PKG_LICENSE="MIT"
 
 PKG_VERSION="0.40.0"

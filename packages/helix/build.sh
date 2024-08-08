@@ -16,7 +16,7 @@ opt/helix/runtime/grammars/sources/
 "
 PKG_DEPENDS="zlib"
 PKG_BASENAME=helix-${PKG_VERSION}
-BUILD_PREFIX="${SCRIPT_DIR}/build/rust"
+BUILD_PREFIX="${RUST_BUILD_DIR}"
 
 # step_make_install() {
 # 	setup_rust

@@ -22,8 +22,13 @@ configure() {
 
 	# sudo apt install ninja-build binfmt-support qemu-user-static
 
+<<<<<<< HEAD
 	export CC="${ROOT_DIR}/wrappers/zig/bin/cc --target=${TARGET}"
 	export CC="${ROOT_DIR}/wrappers/zig/bin/c++ --target=${TARGET}"
+=======
+	export CC="${ROOTDIR}/wrappers/zig/bin/cc --target=${TARGET}"
+	export CC="${ROOTDIR}/wrappers/zig/bin/c++ --target=${TARGET}"
+>>>>>>> fc032b7 (update)
 	export LDFLAGS="-s"
 
 	mkdir -p build && cd build || exit
