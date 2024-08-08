@@ -18,7 +18,7 @@ PKG_BUILD_IN_SRC=true
 # }
 
 PKG_BASENAME=aichat-${PKG_VERSION}
-BUILD_PREFIX="${SCRIPT_DIR}/build/rust"
+BUILD_PREFIX="${ROOT_DIR}/build/rust"
 
 build() {
 	setup_rust

@@ -58,13 +58,13 @@ patch_source() {
 	export CFLAGS=" -I${ANDROID_NDK_HOME}/sources/android/cpufeatures"
 
 	### ======================================
-	# if test -f ${GITHUB_WORKSPACE}/packages/nodejs/${{ github.event.inputs.node_version }}.patch; then
-	# 	patch --strip=1 < ${GITHUB_WORKSPACE}/packages/nodejs/${{ github.event.inputs.node_version }}.patch --no-backup-if-mismatch -t
+	# if test -f ${GITHUB_ROOT_DIR}/packages/nodejs/${{ github.event.inputs.node_version }}.patch; then
+	# 	patch --strip=1 < ${GITHUB_ROOT_DIR}/packages/nodejs/${{ github.event.inputs.node_version }}.patch --no-backup-if-mismatch -t
 	# fi
 
 	# # Try to patch trap-handler.h
 	# if test $(echo ${{ github.event.inputs.node_version }} | grep -Eo -e "^[0-9]+") -gt 20; then
-	# 	cp ${GITHUB_WORKSPACE}/packages/nodejs/21.x.fixed-trap-handler.patch ./android-patches/trap-handler.h.patch
+	# 	cp ${GITHUB_ROOT_DIR}/packages/nodejs/21.x.fixed-trap-handler.patch ./android-patches/trap-handler.h.patch
 	# fi
 	# patch -f ./deps/v8/src/trap-handler/trap-handler.h < ./android-patches/trap-handler.h.patch --no-backup-if-mismatch -t || true
 

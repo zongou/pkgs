@@ -3,10 +3,10 @@ set -eu
 
 msg() { printf '%s\n' "$*" >&2; }
 
-WORKSPACE="$(dirname "$(realpath "$0")")"
-export GO_BUILD_DIR="${WORKSPACE}/build/go"
-export RUST_BUILD_DIR="${WORKSPACE}/build/rust"
-SRCS_DIR="${WORKSPACE}/sources"
+ROOT_DIR="$(dirname "$(realpath "$0")")"
+export GO_BUILD_DIR="${ROOT_DIR}/build/go"
+export RUST_BUILD_DIR="${ROOT_DIR}/build/rust"
+SRCS_DIR="${ROOT_DIR}/sources"
 mkdir -p "${SRCS_DIR}"
 # shellcheck disable=SC2155
 export JOBS="$(nproc --all)"
@@ -20,8 +20,8 @@ setup_target() {
 			export ANDROID_ABI ANDROID_API
 			TOOLCHAIN="${TOOLCHAIN-${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64}"
 
-			BUILD_PREFIX="${BUILD_PREFIX-${WORKSPACE}/build/${ANDROID_ABI}}"
-			OUTPUT_DIR="${WORKSPACE}/output/${ANDROID_ABI}"
+			BUILD_PREFIX="${BUILD_PREFIX-${ROOT_DIR}/build/${ANDROID_ABI}}"
+			OUTPUT_DIR="${ROOT_DIR}/output/${ANDROID_ABI}"
 
 			export CC="${CC-${TOOLCHAIN}/bin/${TARGET}-clang}"
 			export CXX="${CXX-${TOOLCHAIN}/bin/${TARGET}-clang++}"
@@ -43,17 +43,17 @@ setup_target() {
 			if test "${TARGET+1}"; then
 				export TARGET
 			fi
-			BUILD_PREFIX="${BUILD_PREFIX-${WORKSPACE}/build/${TARGET}}"
-			OUTPUT_DIR="${WORKSPACE}/output/${TARGET}"
+			BUILD_PREFIX="${BUILD_PREFIX-${ROOT_DIR}/build/${TARGET}}"
+			OUTPUT_DIR="${ROOT_DIR}/output/${TARGET}"
 
-			export CC="${CC-${WORKSPACE}/wrappers/zig/bin/cc}"
-			export CXX="${CXX-${WORKSPACE}/wrappers/zig/bin/c++}"
-			export LD="${LD-${WORKSPACE}/wrappers/zig/ld.lld}"
+			export CC="${CC-${ROOT_DIR}/wrappers/zig/bin/cc}"
+			export CXX="${CXX-${ROOT_DIR}/wrappers/zig/bin/c++}"
+			export LD="${LD-${ROOT_DIR}/wrappers/zig/ld.lld}"
 			;;
 		esac
 	else
-		BUILD_PREFIX="${BUILD_PREFIX-${WORKSPACE}/build/host}"
-		OUTPUT_DIR="${WORKSPACE}/output/host"
+		BUILD_PREFIX="${BUILD_PREFIX-${ROOT_DIR}/build/host}"
+		OUTPUT_DIR="${ROOT_DIR}/output/host"
 
 		CC=${CC-cc}
 		CXX=${CXX-c++}
@@ -162,7 +162,7 @@ setup_depends() {
 			(
 				unset -f check
 				# shellcheck disable=SC1090
-				. "${WORKSPACE}/packages/${package}/build.sh"
+				. "${ROOT_DIR}/packages/${package}/build.sh"
 				if command -v check >/dev/null && ! check; then
 					build_package "${package}"
 				fi
@@ -175,12 +175,12 @@ setup_depends() {
 build_package() {
 	(
 		package="$1"
-		PKG_CONFIG_DIR="${WORKSPACE}/packages/${package}"
+		PKG_CONFIG_DIR="${ROOT_DIR}/packages/${package}"
 		export PKG_CONFIG_DIR
 		unset BUILD_PREFIX PKG_DEPENDS
 		msg "Building package '${package}'"
 		# shellcheck disable=SC1090
-		. "${WORKSPACE}/packages/${package}/build.sh"
+		. "${ROOT_DIR}/packages/${package}/build.sh"
 		for step in setup_target setup_depends setup_source configure build; do
 			if command -v "${step}" >/dev/null; then
 				"${step}"

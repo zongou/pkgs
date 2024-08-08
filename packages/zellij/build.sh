@@ -1,5 +1,5 @@
 PKG_HOMEPAGE="https://zellij.dev/"
-PKG_DESCRIPTION="A terminal workspace with batteries included"
+PKG_DESCRIPTION="A terminal ROOT_DIR with batteries included"
 PKG_LICENSE="MIT"
 
 PKG_VERSION="0.40.0"
