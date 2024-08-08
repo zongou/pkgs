@@ -11,7 +11,7 @@ PKG_SRCURL=https://github.com/libuv/libuv/archive/refs/tags/v${PKG_VERSION}.tar.
 
 configure() {
 	./autogen.sh
-	env CFLAGS=-fPIC ./configure --disable-shared --enable-static --prefix="${OUTPUT_DIR}" --host="${TARGET}"
+	env CFLAGS=-fPIC ./configure --disable-shared --enable-static --prefix="${OUTPUT_DIR}" ${HOST+--host=${TARGET}}
 }
 
 build() {
