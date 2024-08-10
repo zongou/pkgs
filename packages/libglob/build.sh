@@ -8,10 +8,8 @@ PKG_EXTNAME=.tar.gz
 PKG_SRCURL=https://github.com/leleliu008/libglob/archive/refs/heads/${PKG_VERSION}${PKG_EXTNAME}
 
 configure() {
-	rm -rf build && mkdir -p build && cd build
-	cmake \
-		-DCMAKE_INSTALL_PREFIX="${OUTPUT_DIR}" \
-		..
+	rm -rf build && mkdir -p build
+	cmake -S . -B build -DCMAKE_INSTALL_PREFIX="${OUTPUT_DIR}"
 }
 
 build() {

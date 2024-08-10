@@ -2,7 +2,8 @@ PKG_HOMEPAGE="https://tiswww.case.edu/php/chet/readline/rltop.html"
 PKG_DESCRIPTION="Library that allow users to edit command lines as they are typed in"
 PKG_LICENSE="GPL-3.0"
 
-PKG_DEPENDS="libandroid-support, ncurses"
+# PKG_DEPENDS="libandroid-support ncurses"
+PKG_DEPENDS="ncurses"
 PKG_BREAKS="bash (<< 5.0), readline-dev"
 PKG_REPLACES="readline-dev"
 PKG_SHA256=3feb7171f16a84ee82ca18a36d7b9be109a52c04f492a053331d7d1095007c35
@@ -15,10 +16,6 @@ PKG_BASENAME=readline-${PKG_VERSION}
 PKG_EXTNAME=.tar.gz
 PKG_SRCURL=https://mirrors.kernel.org/gnu/readline/${PKG_BASENAME}${PKG_EXTNAME}
 PKG_SRCURL=https://ftp.gnu.org/gnu/readline/${PKG_BASENAME}${PKG_EXTNAME}
-
-depends() {
-	echo ncurses
-}
 
 configure() {
 	sed -i 's^/etc/inputrc^/data/data/com.xterm/files/usr/etc/inputrc^g' rlconf.h
@@ -39,5 +36,5 @@ build() {
 }
 
 check() {
-	test -f "${OUTPUT_DIR}/libreadline.a"
+	test -f "${OUTPUT_DIR}/lib/libreadline.a"
 }
