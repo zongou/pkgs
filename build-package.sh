@@ -20,7 +20,7 @@ setup_target() {
 			export ANDROID_ABI ANDROID_API
 
 			if ! test ${TOOLCHAIN+1} && test ${ANDROID_NDK_ROOT+1}; then
-				TOOLCHAIN=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64
+				TOOLCHAIN=${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64
 			fi
 
 			BUILD_PREFIX="${BUILD_PREFIX-${ROOT_DIR}/build/${ANDROID_ABI}}"
@@ -117,7 +117,7 @@ setup_rust() {
 	export "CARGO_TARGET_$(echo "${CARGO_BUILD_TARGET}" | tr "[:lower:]" "[:upper:]" | tr '-' '_')_LINKER=${CC}"
 	export CARGO_BUILD_JOBS="${JOBS}"
 
-	if ! rustup target list --installed | grep -q "${CARGO_BUILD_TARGET}"; then
+	if command -v rustup >/dev/null && ! rustup target list --installed | grep -q "${CARGO_BUILD_TARGET}"; then
 		rustup target add "${CARGO_BUILD_TARGET}"
 	fi
 }

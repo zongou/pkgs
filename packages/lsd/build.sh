@@ -2,7 +2,7 @@ PKG_HOMEPAGE=https://github.com/lsd-rs/lsd
 PKG_DESCRIPTION="Next gen ls command"
 PKG_LICENSE="Apache-2.0"
 
-PKG_VERSION="1.1.2"
+PKG_VERSION="1.1.5"
 PKG_NAME=lsd
 PKG_BASENAME=${PKG_NAME}-${PKG_VERSION}
 PKG_EXTNAME=.tar.gz
