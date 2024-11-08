@@ -15,7 +15,7 @@ configure() {
 	# Prevent linking against guile:
 	EXTRA_CONFIGURE_ARGS="${EXTRA_CONFIGURE_ARGS:-} --without-guile"
 
-	if test "$ABI" = "armv7a"; then
+	if test "${ANDROID_ABI}" = "armv7a"; then
 		# Fix issue with make on arm hanging at least under cmake:
 		# https://github.com/termux/termux-packages/issues/2983
 		EXTRA_CONFIGURE_ARGS="${EXTRA_CONFIGURE_ARGS:-} ac_cv_func_pselect=no"
