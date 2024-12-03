@@ -181,9 +181,9 @@ build_package() {
 		PKG_CONFIG_DIR="${ROOT_DIR}/packages/${package}"
 		export PKG_CONFIG_DIR
 		unset BUILD_PREFIX PKG_DEPENDS
-		msg "Building package '${package}'"
 		# shellcheck disable=SC1090
 		. "${ROOT_DIR}/packages/${package}/build.sh"
+		msg "Building ${package} ${PKG_VERSION}"
 		for step in setup_target setup_depends setup_source configure build; do
 			if command -v "${step}" >/dev/null; then
 				"${step}"
