@@ -49,9 +49,10 @@ setup_target() {
 			BUILD_PREFIX="${BUILD_PREFIX-${ROOT_DIR}/build/${TARGET}}"
 			OUTPUT_DIR="${ROOT_DIR}/output/${TARGET}"
 
-			export CC="${CC-${ROOT_DIR}/wrappers/zig/bin/cc}"
-			export CXX="${CXX-${ROOT_DIR}/wrappers/zig/bin/c++}"
-			export LD="${LD-${ROOT_DIR}/wrappers/zig/ld.lld}"
+			export CC="${CC-${TOOLCHAIN}/bin/cc}"
+			export CXX="${CXX-${TOOLCHAIN}/bin/c++}"
+			export LD="${LD-${TOOLCHAIN}/bin/ld.lld}"
+			export PATH=${TOOLCHAIN}/bin:$PATH
 			;;
 		esac
 	else

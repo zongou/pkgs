@@ -7,7 +7,7 @@ PKG_HOMEPAGE=https://tukaani.org/xz/
 PKG_DESCRIPTION="XZ-format compression library"
 PKG_LICENSE="LGPL-2.1, GPL-2.0, GPL-3.0"
 PKG_LICENSE_FILE="COPYING, COPYING.GPLv2, COPYING.GPLv3, COPYING.LGPLv2.1"
-PKG_VERSION="5.6.2"
+PKG_VERSION="5.6.3"
 PKG_SRCURL=https://github.com/tukaani-project/xz/releases/download/v$PKG_VERSION/xz-$PKG_VERSION.tar.xz
 
 PKG_BASENAME=xz-${PKG_VERSION}
