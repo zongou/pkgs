@@ -4,7 +4,7 @@ PKG_HOMEPAGE="https://helix-editor.com/"
 PKG_DESCRIPTION="A post-modern modal text editor written in rust"
 PKG_LICENSE="MPL-2.0"
 
-PKG_VERSION="24.07"
+PKG_VERSION="25.01"
 PKG_NAME=hx
 PKG_SRCURL=https://github.com/helix-editor/helix/archive/refs/tags/${PKG_VERSION}.tar.gz
 PKG_GIT_BRANCH="${PKG_VERSION}"
