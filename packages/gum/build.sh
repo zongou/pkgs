@@ -2,7 +2,7 @@ PKG_HOMEPAGE=https://github.com/charmbracelet/gum
 PKG_DESCRIPTION="A tool for glamorous shell scripts 🎀"
 PKG_LICENSE="MIT"
 
-PKG_VERSION="0.14.4"
+PKG_VERSION="0.15.2"
 PKG_SRCURL=https://github.com/charmbracelet/gum/archive/refs/tags/v${PKG_VERSION}.tar.gz
 
 PKG_BASENAME=gum-${PKG_VERSION}

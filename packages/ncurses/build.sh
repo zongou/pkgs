@@ -3,7 +3,7 @@ PKG_DESCRIPTION="Library for text-based user interfaces in a terminal-independen
 PKG_LICENSE="MIT"
 
 PKG_EXTNAME=.tar.gz
-PKG_VERSION=6.4
+PKG_VERSION=6.5
 PKG_BASENAME=ncurses-${PKG_VERSION}
 PKG_SRCURL=https://ftp.gnu.org/gnu/ncurses/${PKG_BASENAME}${PKG_EXTNAME}
 

@@ -11,7 +11,7 @@ PKG_EXTRA_CONFIGURE_ARGS="--with-curses --enable-multibyte bash_cv_wcwidth_broke
 PKG_EXTRA_MAKE_ARGS="SHLIB_LIBS=-lncursesw"
 PKG_CONFFILES="etc/inputrc"
 
-PKG_VERSION=8.2
+PKG_VERSION=8.2.13
 PKG_BASENAME=readline-${PKG_VERSION}
 PKG_EXTNAME=.tar.gz
 PKG_SRCURL=https://mirrors.kernel.org/gnu/readline/${PKG_BASENAME}${PKG_EXTNAME}
