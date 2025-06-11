@@ -49,7 +49,7 @@ setup_target() {
 			BUILD_PREFIX="${BUILD_PREFIX-${ROOT_DIR}/build/${TARGET}}"
 			OUTPUT_DIR="${ROOT_DIR}/output/${TARGET}"
 
-			export ZIG_TARGET=${TARGET}
+			export ZIG_TARGET="${TARGET}"
 			export CC="${CC-${ROOT_DIR}/tools/zig-as-llvm/bin/cc}"
 			export CXX="${CXX-${ROOT_DIR}/tools/zig-as-llvm/bin/c++}"
 			export LD="${LD-${ROOT_DIR}/tools/zig-as-llvm/ld.lld}"

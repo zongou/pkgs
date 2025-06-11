@@ -6,6 +6,7 @@ Features:
 
 - Build with NDK
 - Statically linked binaries oriented.
+
 ## Usage
 
 ### Run in command line
