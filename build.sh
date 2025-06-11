@@ -27,11 +27,11 @@ setup_target() {
             CC="${CC-${TOOLCHAIN}/bin/${TARGET}-clang}"
             CXX="${CXX-${TOOLCHAIN}/bin/${TARGET}-clang++}"
             LD="${LD-${TOOLCHAIN}/bin/ld.lld}"
-            AR="${AR-${TOOLCHAIN}/bin/${TARGET}-ar}"
-            STRIP="${STRIP-${TOOLCHAIN}/bin/${TARGET}-strip}"
-            OBJCOPY="${OBJCOPY-${TOOLCHAIN}/bin/${TARGET}-objcopy}"
-            OBJDUMP="${OBJDUMP-${TOOLCHAIN}/bin/${TARGET}-objdump}"
-            RANLIB="${RANLIB-${TOOLCHAIN}/bin/${TARGET}-ranlib}"
+            AR="${AR-${TOOLCHAIN}/bin/llvm-ar}"
+            STRIP="${STRIP-${TOOLCHAIN}/bin/llvm-strip}"
+            OBJCOPY="${OBJCOPY-${TOOLCHAIN}/bin/llvm-objcopy}"
+            OBJDUMP="${OBJDUMP-${TOOLCHAIN}/bin/llvm-objdump}"
+            RANLIB="${RANLIB-${TOOLCHAIN}/bin/llvm-ranlib}"
             ;;
         *) ;;
         esac
