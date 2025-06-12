@@ -53,7 +53,6 @@ EOF
 ```sh
 make -j"${JOBS}"
 
-mkdir -p "${OUTPUT_DIR}/lib" "${OUTPUT_DIR}/include"
 ${AR-ar} rcs "${OUTPUT_DIR}/lib/libtalloc.a" bin/default/talloc*.o
 cp -f talloc.h "${OUTPUT_DIR}/include"
 ```

@@ -75,7 +75,7 @@ setup_target() {
     fi
 
     mkdir -p "${BUILD_PREFIX}"
-    mkdir -p "${OUTPUT_DIR}" "${OUTPUT_DIR}/bin" "${OUTPUT_DIR}/lib"
+    mkdir -p "${OUTPUT_DIR}" "${OUTPUT_DIR}/bin" "${OUTPUT_DIR}/lib" "${OUTPUT_DIR}/include"
 
     export CC CXX LD AR STRIP OBJCOPY OBJDUMP RANLIB
     export OUTPUT_DIR BUILD_PREFIX
@@ -166,7 +166,7 @@ setup_source() {
     cd "${BUILD_PREFIX}/${PKG_BASENAME}"
 }
 
-build() {
+build_package() {
     PKG=$1
     PKG_CONFIG_DIR="${ROOT}/packages/${PKG}"
     md_conifg="${PKG_CONFIG_DIR}/build.md"
@@ -192,7 +192,7 @@ build() {
     if test "${PKG_DEPENDS+1}"; then
         for dep in ${PKG_DEPENDS}; do
             if ! ${MD_EXE} --file="${ROOT}/packages/${dep}/build.md" check; then
-                build "${dep}"
+                build_package "${dep}"
             fi
         done
     fi
@@ -207,6 +207,6 @@ build() {
     done
 }
 
-build "$@"
+build_package "$@"
 
 ```
