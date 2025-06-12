@@ -8,7 +8,7 @@
 | PKG_VERSION     | 35                                                  |
 | PKG_SRCURL      | <https://github.com/gokcehan/lf/archive/r35.tar.gz> |
 | PKG_BASENAME    | lf-r35                                              |
-| PKG_LANG        | go                                                  |
+| PKG_BUILD_TOOL  | go                                                  |
 
 ## Build
 

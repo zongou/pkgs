@@ -169,11 +169,11 @@ build() {
     md_conifg="${PKG_CONFIG_DIR}/build.md"
     PKG_SRCURL=$(${MD_EXE} --file="${md_conifg}" --key=PKG_SRCURL)
     PKG_BASENAME=$(${MD_EXE} --file="${md_conifg}" --key=PKG_BASENAME)
-    PKG_LANG=$(${MD_EXE} --file="${md_conifg}" --key=PKG_LANG)
+    PKG_BUILD_TOOL=$(${MD_EXE} --file="${md_conifg}" --key=PKG_BUILD_TOOL)
 
-    export PKG PKG_CONFIG_DIR PKG_SRCURL PKG_BASENAME PKG_LANG
+    export PKG PKG_CONFIG_DIR PKG_SRCURL PKG_BASENAME PKG_BUILD_TOOL
 
-    case "${PKG_LANG}" in
+    case "${PKG_BUILD_TOOL}" in
     go) setup_golang ;;
     rust) setup_rust ;;
     *) ;;
