@@ -83,11 +83,10 @@ setup_golang() {
     if test "${TARGET+1}"; then
         ## Detect GOOS
         case "${TARGET}" in
-        *-linux-android*) export GOOS=android CGO_ENABLED=1;;
+        *-linux-android*) export GOOS=android CGO_ENABLED=1 ;;
         *-linux-musl*) export GOOS=linux ;;
         *) ;;
         esac
-
 
         ## Detect GOARCH
         case "${TARGET}" in
@@ -167,17 +166,19 @@ build() {
     PKG=$1
     PKG_CONFIG_DIR="${ROOT}/packages/${PKG}"
     md_conifg="${PKG_CONFIG_DIR}/build.md"
-    PKG_SRCURL=$(${MD_EXE} --file="${md_conifg}" --key=PKG_SRCURL)
-    PKG_BASENAME=$(${MD_EXE} --file="${md_conifg}" --key=PKG_BASENAME)
-    PKG_BUILD_TOOL=$(${MD_EXE} --file="${md_conifg}" --key=PKG_BUILD_TOOL)
+    for env_key in PKG_SRCURL PKG_BASENAME PKG_VERSION PKG_HOMEPAGE PKG_DESCRIPTION PKG_LICENSE PKG_DEPENDS PKG_LANG; do
+        if ${MD_EXE} --file="${md_conifg}" --key=${env_key} >/dev/null 2>&1; then
+            export "${env_key}"="$(${MD_EXE} --file="${md_conifg}" --key=${env_key})"
+        fi
+    done
 
-    export PKG PKG_CONFIG_DIR PKG_SRCURL PKG_BASENAME PKG_BUILD_TOOL
-
-    case "${PKG_BUILD_TOOL}" in
-    go) setup_golang ;;
-    rust) setup_rust ;;
-    *) ;;
-    esac
+    if test "${PKG_LANG+1}"; then
+        case "${PKG_LANG}" in
+        go) setup_golang ;;
+        rust) setup_rust ;;
+        *) ;;
+        esac
+    fi
 
     setup_target
     setup_source
@@ -191,24 +192,5 @@ build() {
 }
 
 build "$@"
-
-# ## The steps to build package, and what matters the most
-# build_package() {
-#     (
-#         package="$1"
-#         PKG_CONFIG_DIR="${ROOT_DIR}/packages/${package}"
-#         export PKG_CONFIG_DIR
-
-#         unset BUILD_PREFIX PKG_DEPENDS
-#         # shellcheck disable=SC1090
-#         . "${ROOT_DIR}/packages/${package}/build.sh"
-#         msg "Building package ${package} ${PKG_VERSION}"
-#         for step in setup_target setup_depends setup_source configure build; do
-#             if command -v "${step}" >/dev/null; then
-#                 "${step}"
-#             fi
-#         done
-#     )
-# }
 
 ```
