@@ -36,7 +36,7 @@ setup_target() {
         *) ;;
         esac
 
-        BUILD_PREFIX="${BUILD_PREFIX-${ROOT}/build/${ANDROID_ABI}}"
+        BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${ANDROID_ABI}}"
         OUTPUT_DIR="${ROOT}/output/${ANDROID_ABI}"
     else
         CC=${CC-cc}
@@ -48,8 +48,8 @@ setup_target() {
         OBJDUMP=${OBJDUMP-objdump}
         RANLIB=${RANLIB-ranlib}
 
+        BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/host}"
         OUTPUT_DIR="${ROOT}/output/host"
-        BUILD_PREFIX=${BUILD_ROOT}/host
     fi
 
     mkdir -p "${BUILD_PREFIX}"
@@ -59,6 +59,55 @@ setup_target() {
     export OUTPUT_DIR BUILD_PREFIX
     export PKG_CONFIG_PATH="${OUTPUT_DIR}/lib/pkgconfig" ## pkg-conf
     export FORCE_UNSAFE_CONFIGURE=1                      ## autoconf in PRoot enviroment
+}
+
+setup_golang() {
+    if test "${TARGET+1}"; then
+        ## Detect GOOS
+        case "${TARGET}" in
+        *-linux-android*) export CGO_ENABLED=1 GOOS=android ;;
+        *-linux-musl*) export CGO_ENABLED=1 GOOS=linux ;;
+        *) ;;
+        esac
+
+        ## Detect GOARCH
+        case "${TARGET}" in
+        aarch64-*) export GOARCH=arm64 ;;
+        arm-*) export GOARCH=arm ;;
+        x86_64-*) export GOARCH=amd64 ;;
+        i686-*) export GOARCH=386 ;;
+        *) ;;
+        esac
+    fi
+}
+
+setup_rust() {
+    case "${TARGET}" in
+    *-linux-android*)
+        CARGO_BUILD_TARGET="$(echo "${ANDROID_ABI}" | sed 's/armv7a/armv7/')"
+        export CARGO_BUILD_TARGET
+        ;;
+    aarch64-linux-musl)
+        export CARGO_BUILD_TARGET=aarch64-unknown-linux-musl
+        ;;
+    aarch64-linux-gnu)
+        export CARGO_BUILD_TARGET=aarch64-unknown-linux-gnu
+        ;;
+    x86_64-linux-gnu)
+        export CARGO_BUILD_TARGET=x86_64-unknown-linux-gnu
+        ;;
+    x86_64-linux-musl)
+        export CARGO_BUILD_TARGET=x86_64-unknown-linux-musl
+        ;;
+    *) ;;
+    esac
+
+    export "CARGO_TARGET_$(echo "${CARGO_BUILD_TARGET}" | tr "[:lower:]" "[:upper:]" | tr '-' '_')_LINKER=${CC}"
+    export CARGO_BUILD_JOBS="${JOBS}"
+
+    if command -v rustup >/dev/null && ! rustup target list --installed | grep -q "${CARGO_BUILD_TARGET}"; then
+        rustup target add "${CARGO_BUILD_TARGET}"
+    fi
 }
 
 setup_source() {
@@ -111,3 +160,22 @@ build() {
 }
 
 build "$@"
+
+## The steps to build package, and what matters the most
+build_package() {
+    (
+        package="$1"
+        PKG_CONFIG_DIR="${ROOT_DIR}/packages/${package}"
+        export PKG_CONFIG_DIR
+
+        unset BUILD_PREFIX PKG_DEPENDS
+        # shellcheck disable=SC1090
+        . "${ROOT_DIR}/packages/${package}/build.sh"
+        msg "Building package ${package} ${PKG_VERSION}"
+        for step in setup_target setup_depends setup_source configure build; do
+            if command -v "${step}" >/dev/null; then
+                "${step}"
+            fi
+        done
+    )
+}
