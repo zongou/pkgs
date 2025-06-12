@@ -16,7 +16,7 @@
 setup_golang
 ```
 
-## build
+## Build
 
 ```sh
 go build -ldflags="-X main.gVersion=r${PKG_VERSION}" -trimpath
