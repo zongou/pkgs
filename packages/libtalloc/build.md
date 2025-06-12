@@ -40,13 +40,12 @@ Checking for HAVE_IFACE_IFCONF: FAIL
 EOF
 
 ./configure \
-	--host="${TARGET}" \
-	--prefix="${OUTPUT_DIR}" \
-	--disable-rpath \
-	--disable-python \
-	--cross-compile \
-	--cross-answers=cross-answers.txt
-
+    --host="${TARGET}" \
+    --prefix="${OUTPUT_DIR}" \
+    --disable-rpath \
+    --disable-python \
+    --cross-compile \
+    --cross-answers=cross-answers.txt
 ```
 
 ## Build
@@ -57,7 +56,6 @@ make -j"${JOBS}"
 mkdir -p "${OUTPUT_DIR}/lib" "${OUTPUT_DIR}/include"
 ${AR-ar} rcs "${OUTPUT_DIR}/lib/libtalloc.a" bin/default/talloc*.o
 cp -f talloc.h "${OUTPUT_DIR}/include"
-
 ```
 
 ## Check
