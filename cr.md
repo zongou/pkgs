@@ -38,11 +38,11 @@ setup_target() {
             RANLIB="${RANLIB-${TOOLCHAIN}/bin/llvm-ranlib}"
 
             BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${ANDROID_ABI}}"
-            OUTPUT_DIR="${OUTPUT_ROOT}/${ANDROID_ABI}"
+            OUTPUT_DIR="${ROOT}/output/${ANDROID_ABI}"
             ;;
         *)
             BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${TARGET}}"
-            OUTPUT_DIR="${OUTPUT_ROOT}/${TARGET}"
+            OUTPUT_DIR="${ROOT}/output/${TARGET}"
             ;;
         esac
 
@@ -57,7 +57,7 @@ setup_target() {
         RANLIB=${RANLIB-ranlib}
 
         BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/host}"
-        OUTPUT_DIR="${OUTPUT_ROOT}/host"
+        OUTPUT_DIR="${ROOT}/output/host"
     fi
 
     mkdir -p "${BUILD_PREFIX}"
@@ -73,8 +73,8 @@ setup_golang() {
     if test "${TARGET+1}"; then
         ## Detect GOOS
         case "${TARGET}" in
-        *-linux-android*) export CGO_ENABLED=1 GOOS=android ;;
-        *-linux-musl*) export CGO_ENABLED=1 GOOS=linux ;;
+        *-linux-android*) export GOOS=android ;;
+        *-linux-musl*) export GOOS=linux ;;
         *) ;;
         esac
 
@@ -158,16 +158,22 @@ build() {
     md_conifg="${PKG_CONFIG_DIR}/build.md"
     PKG_SRCURL=$(${MD_EXE} --file="${md_conifg}" --key=PKG_SRCURL)
     PKG_BASENAME=$(${MD_EXE} --file="${md_conifg}" --key=PKG_BASENAME)
+    PKG_LANG=$(${MD_EXE} --file="${md_conifg}" --key=PKG_LANG)
 
-    export PKG PKG_CONFIG_DIR PKG_SRCURL PKG_BASENAME
+    export PKG PKG_CONFIG_DIR PKG_SRCURL PKG_BASENAME PKG_LANG
+
+    case "${PKG_LANG}" in
+    go) setup_golang ;;
+    rust) setup_rust ;;
+    *) ;;
+    esac
 
     setup_target
     setup_source
 
     for step in configure build; do
-        # ${MD_EXE} --file="${md_conifg}" -c "${step}"
-        if ${MD_EXE} --file="${md_conifg}" -c "${step}" 2>/dev/null; then
-            msg "Running ${step}"
+        if ${MD_EXE} --file="${md_conifg}" -c "${step}" >/dev/null 2>&1; then
+            # msg "Running ${step}"
             ${MD_EXE} --file="${md_conifg}" "${step}"
         fi
     done
@@ -175,23 +181,23 @@ build() {
 
 build "$@"
 
-## The steps to build package, and what matters the most
-build_package() {
-    (
-        package="$1"
-        PKG_CONFIG_DIR="${ROOT_DIR}/packages/${package}"
-        export PKG_CONFIG_DIR
+# ## The steps to build package, and what matters the most
+# build_package() {
+#     (
+#         package="$1"
+#         PKG_CONFIG_DIR="${ROOT_DIR}/packages/${package}"
+#         export PKG_CONFIG_DIR
 
-        unset BUILD_PREFIX PKG_DEPENDS
-        # shellcheck disable=SC1090
-        . "${ROOT_DIR}/packages/${package}/build.sh"
-        msg "Building package ${package} ${PKG_VERSION}"
-        for step in setup_target setup_depends setup_source configure build; do
-            if command -v "${step}" >/dev/null; then
-                "${step}"
-            fi
-        done
-    )
-}
+#         unset BUILD_PREFIX PKG_DEPENDS
+#         # shellcheck disable=SC1090
+#         . "${ROOT_DIR}/packages/${package}/build.sh"
+#         msg "Building package ${package} ${PKG_VERSION}"
+#         for step in setup_target setup_depends setup_source configure build; do
+#             if command -v "${step}" >/dev/null; then
+#                 "${step}"
+#             fi
+#         done
+#     )
+# }
 
 ```
