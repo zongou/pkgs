@@ -101,7 +101,7 @@ setup_source() {
 
 build() {
     PKG=$1
-    PKG_CONFIG_DIR="${ROOT}/pkgs/${PKG}"
+    PKG_CONFIG_DIR="${ROOT}/packages/${PKG}"
     md_conifg="${PKG_CONFIG_DIR}/build.md"
     PKG_SRCURL=$(${MD_EXE} --file="${md_conifg}" --key=PKG_SRCURL)
     PKG_BASENAME=$(${MD_EXE} --file="${md_conifg}" --key=PKG_BASENAME)
