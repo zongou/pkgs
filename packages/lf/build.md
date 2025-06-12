@@ -10,10 +10,15 @@
 | PKG_BASENAME    | lf-r32                                              |
 | BUILD_PREFIX    | ${GO_BUILD_DIR}                                     |
 
-## build
+## Configure
 
 ```sh
 setup_golang
+```
+
+## build
+
+```sh
 go build -ldflags="-X main.gVersion=r$PKG_VERSION" -trimpath
 install -Dt "${OUTPUT_DIR}/bin" lf
 ```
