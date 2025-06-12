@@ -2,23 +2,22 @@
 
 <https://docs.helix-editor.com/building-from-source.html>
 
-| key                  | value                                                                           |
-| -------------------- | ------------------------------------------------------------------------------- |
-| PKG_HOMEPAGE         | <https://helix-editor.com/>                                                     |
-| PKG_DESCRIPTION      | A post-modern modal text editor written in rust                                 |
-| PKG_LICENSE          | MPL-2.0                                                                         |
-| PKG_VERSION          | 25.01.1                                                                         |
-| PKG_NAME             | hx                                                                              |
-| PKG_SRCURL           | <https://github.com/helix-editor/helix/archive/refs/tags/${PKG_VERSION}.tar.gz> |
-| PKG_GIT_BRANCH       | ${PKG_VERSION}                                                                  |
-| PKG_SUGGESTS         | helix-grammars                                                                  |
-| PKG_BUILD_IN_SRC     | true                                                                            |
-| PKG_AUTO_UPDATE      | true                                                                            |
-| PKG_RM_AFTER_INSTALL | opt/helix/runtime/grammars/sources/                                             |
-| PKG_DEPENDS          | zlib                                                                            |
-| PKG_BASENAME         | helix-${PKG_VERSION}                                                            |
-| BUILD_PREFIX         | ${RUST_BUILD_DIR}                                                               |
-| PKG_LANG             | rust                                                                            |
+| key                  | value                                                                    |
+| -------------------- | ------------------------------------------------------------------------ |
+| PKG_HOMEPAGE         | <https://helix-editor.com/>                                              |
+| PKG_DESCRIPTION      | A post-modern modal text editor written in rust                          |
+| PKG_LICENSE          | MPL-2.0                                                                  |
+| PKG_VERSION          | 25.01.1                                                                  |
+| PKG_NAME             | hx                                                                       |
+| PKG_SRCURL           | <https://github.com/helix-editor/helix/archive/refs/tags/25.01.1.tar.gz> |
+| PKG_GIT_BRANCH       | 25.01.1                                                                  |
+| PKG_SUGGESTS         | helix-grammars                                                           |
+| PKG_BUILD_IN_SRC     | true                                                                     |
+| PKG_AUTO_UPDATE      | true                                                                     |
+| PKG_RM_AFTER_INSTALL | opt/helix/runtime/grammars/sources/                                      |
+| PKG_DEPENDS          | zlib                                                                     |
+| PKG_BASENAME         | helix-25.01.1                                                            |
+| PKG_LANG             | rust                                                                     |
 
 ## Build
 

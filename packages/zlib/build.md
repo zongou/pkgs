@@ -21,7 +21,7 @@
 make -j"${JOBS}" install
 ```
 
-## check
+## Check
 
 ```sh
 test -f "${OUTPUT_DIR}/lib/libz.a"
