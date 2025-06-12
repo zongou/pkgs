@@ -10,16 +10,9 @@
 | PKG_BASENAME    | lf-r35                                              |
 | PKG_LANG        | go                                                  |
 
-<!-- ## Configure
-
-```sh
-setup_golang
-``` -->
-
 ## Build
 
 ```sh
-echo $GOOS $GOARCH
 go build -ldflags="-X main.gVersion=r${PKG_VERSION}"
 install -Dt "${OUTPUT_DIR}/bin" lf
 ```

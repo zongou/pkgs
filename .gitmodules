@@ -1,6 +1,3 @@
 [submodule "tools/zig-as-llvm"]
 	path = tools/zig-as-llvm
 	url = https://github.com/zongou/zig-as-llvm
-[submodule "tools/zig-wrappers"]
-	path = tools/zig-wrappers
-	url = https://github.com/zongou/zig-wrappers

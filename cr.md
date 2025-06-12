@@ -41,6 +41,16 @@ setup_target() {
             OUTPUT_DIR="${ROOT}/output/${ANDROID_ABI}"
             ;;
         *)
+            export ZIG_TARGET=${TARGET}
+            CC=${CC-${ROOT}/tools/zig-as-llvm/bin/cc}
+            CXX=${CXX-${ROOT}/tools/zig-as-llvm/bin/c++}
+            LD=${LD-${ROOT}/tools/zig-as-llvm/bin/ld.lld}
+            AR=${AR-${ROOT}/tools/zig-as-llvm/bin/ar}
+            # STRIP=${STRIP-${ROOT}/tools/zig-as-llvm/bin/strip}
+            OBJCOPY=${OBJCOPY-${ROOT}/tools/zig-as-llvm/bin/objcopy}
+            # OBJDUMP=${OBJDUMP-objdump}
+            RANLIB=${RANLIB-${ROOT}/tools/zig-as-llvm/bin/ranlib}
+
             BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${TARGET}}"
             OUTPUT_DIR="${ROOT}/output/${TARGET}"
             ;;
@@ -73,10 +83,11 @@ setup_golang() {
     if test "${TARGET+1}"; then
         ## Detect GOOS
         case "${TARGET}" in
-        *-linux-android*) export GOOS=android ;;
+        *-linux-android*) export GOOS=android CGO_ENABLED=1;;
         *-linux-musl*) export GOOS=linux ;;
         *) ;;
         esac
+
 
         ## Detect GOARCH
         case "${TARGET}" in
