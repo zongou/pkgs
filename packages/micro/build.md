@@ -10,7 +10,7 @@
 | PKG_BASENAME    | micro-2.0.14                                                             |
 | PKG_LANG        | go                                                                       |
 
-## build
+## Build
 
 ```sh
 # VERSION=$(GOOS=$(go env GOHOSTOS) GOARCH=$(go env GOHOSTARCH) go run tools/build-version.go)
