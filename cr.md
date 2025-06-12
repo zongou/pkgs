@@ -38,11 +38,11 @@ setup_target() {
             RANLIB="${RANLIB-${TOOLCHAIN}/bin/llvm-ranlib}"
 
             BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${ANDROID_ABI}}"
-            OUTPUT_DIR="${ROOT}/output/${ANDROID_ABI}"
+            OUTPUT_DIR="${OUTPUT_ROOT}/${ANDROID_ABI}"
             ;;
         *)
             BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${TARGET}}"
-            OUTPUT_DIR="${ROOT}/output/${TARGET}"
+            OUTPUT_DIR="${OUTPUT_ROOT}/${TARGET}"
             ;;
         esac
 
@@ -57,7 +57,7 @@ setup_target() {
         RANLIB=${RANLIB-ranlib}
 
         BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/host}"
-        OUTPUT_DIR="${ROOT}/output/host"
+        OUTPUT_DIR="${OUTPUT_ROOT}/host"
     fi
 
     mkdir -p "${BUILD_PREFIX}"
