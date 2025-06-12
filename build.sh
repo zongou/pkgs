@@ -3,8 +3,7 @@ set -eu
 
 msg() { printf '%s\n' "$*" >&2; }
 
-# ROOT="$(dirname "$(realpath "${MD_FILE}")")"
-ROOT="$(dirname "$(realpath "${0-${MD_FILE}}")")"
+ROOT="$(dirname "$(realpath "${0}")")"
 BUILD_ROOT="${ROOT}/build"
 SOURCES_ROOT="${ROOT}/sources"
 OUTPUT_ROOT="${ROOT}/output"
@@ -32,12 +31,16 @@ setup_target() {
             OBJCOPY="${OBJCOPY-${TOOLCHAIN}/bin/llvm-objcopy}"
             OBJDUMP="${OBJDUMP-${TOOLCHAIN}/bin/llvm-objdump}"
             RANLIB="${RANLIB-${TOOLCHAIN}/bin/llvm-ranlib}"
+
+            BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${ANDROID_ABI}}"
+            OUTPUT_DIR="${ROOT}/output/${ANDROID_ABI}"
             ;;
-        *) ;;
+        *)
+            BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${TARGET}}"
+            OUTPUT_DIR="${ROOT}/output/${TARGET}"
+            ;;
         esac
 
-        BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${ANDROID_ABI}}"
-        OUTPUT_DIR="${ROOT}/output/${ANDROID_ABI}"
     else
         CC=${CC-cc}
         CXX=${CXX-c++}
@@ -146,7 +149,7 @@ setup_source() {
 
 build() {
     PKG=$1
-    PKG_CONFIG_DIR="${ROOT}/pkgs/${PKG}"
+    PKG_CONFIG_DIR="${ROOT}/packages/${PKG}"
     md_conifg="${PKG_CONFIG_DIR}/build.md"
     PKG_SRCURL=$(${MD_EXE} --file="${md_conifg}" --key=PKG_SRCURL)
     PKG_BASENAME=$(${MD_EXE} --file="${md_conifg}" --key=PKG_BASENAME)
@@ -155,8 +158,14 @@ build() {
 
     setup_target
     setup_source
-    ${MD_EXE} --file="${md_conifg}" configure
-    ${MD_EXE} --file="${md_conifg}" build
+
+    for step in configure build; do
+        # ${MD_EXE} --file="${md_conifg}" -c "${step}"
+        if ${MD_EXE} --file="${md_conifg}" -c "${step}" 2>/dev/null; then
+            msg "Running ${step}"
+            ${MD_EXE} --file="${md_conifg}" "${step}"
+        fi
+    done
 }
 
 build "$@"

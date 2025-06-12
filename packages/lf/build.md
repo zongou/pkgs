@@ -10,11 +10,11 @@
 | PKG_BASENAME    | lf-r35                                              |
 | BUILD_PREFIX    | ${GO_BUILD_DIR}                                     |
 
-## Configure
+<!-- ## Configure
 
 ```sh
 setup_golang
-```
+``` -->
 
 ## Build
 
