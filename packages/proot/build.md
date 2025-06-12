@@ -25,20 +25,30 @@ patch -up1 <"${PKG_CONFIG_DIR}/proot-try-TMPDIR.patch"
 
 ## Build
 
+- [x] static
+- [x] stripped
+- [ ] unbundled
+
 ```sh
 ## Add to toolchain search dirs
 export CFLAGS="-I${OUTPUT_DIR}/include"
 export LDFLAGS="-L${OUTPUT_DIR}/lib"
 
 ## Make small size stripped
-export CFLAGS="${CFLAGS} -Os -ffunction-sections -fdata-sections -fno-unwind-tables -fno-asynchronous-unwind-tables"
-export LDFLAGS="${LDFLAGS} -ffunction-sections -fdata-sections -Wl,--gc-sections -s"
+if test ${stripped+1} && test ${stripped} = "1"; then
+    export CFLAGS="${CFLAGS} -Os -ffunction-sections -fdata-sections -fno-unwind-tables -fno-asynchronous-unwind-tables"
+    export LDFLAGS="${LDFLAGS} -ffunction-sections -fdata-sections -Wl,--gc-sections -s"
+fi
 
 ## Make static linked
-export LDFLAGS="${LDFLAGS} -static"
+if test ${static+1} && test ${static} = "1"; then
+    export LDFLAGS="${LDFLAGS} -static"
+fi
 
 ## Make loader unbundled
-# export PROOT_UNBUNDLE_LOADER='../libexec/proot'
+if test ${unbundled+1} && test ${unbundled} = "1"; then
+    export PROOT_UNBUNDLE_LOADER='../libexec/proot'
+fi
 
 make -C src distclean || true
 make -C src V=1 "PREFIX=${OUTPUT_DIR}" ${STRIP+STRIP="${STRIP}"} -j"${JOBS}" install
