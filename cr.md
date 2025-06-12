@@ -192,7 +192,7 @@ build_package() {
     if test "${PKG_DEPENDS+1}"; then
         for dep in ${PKG_DEPENDS}; do
             if ! ${MD_EXE} --file="${ROOT}/packages/${dep}/build.md" check; then
-                build_package "${dep}"
+                (build_package "${dep}")
             fi
         done
     fi
