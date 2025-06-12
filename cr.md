@@ -1,4 +1,8 @@
-# Build PKGs
+# Build Packages
+
+| key    | value                   |
+| ------ | ----------------------- |
+| TARGET | aarch64-linux-android24 |
 
 ## build
 
