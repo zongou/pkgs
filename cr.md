@@ -170,6 +170,8 @@ build() {
     PKG=$1
     PKG_CONFIG_DIR="${ROOT}/packages/${PKG}"
     md_conifg="${PKG_CONFIG_DIR}/build.md"
+    export PKG PKG_CONFIG_DIR
+
     for env_key in PKG_SRCURL PKG_BASENAME PKG_VERSION PKG_HOMEPAGE PKG_DESCRIPTION PKG_LICENSE PKG_DEPENDS PKG_LANG; do
         unset ${env_key}
         if ${MD_EXE} --file="${md_conifg}" --key=${env_key} >/dev/null 2>&1; then
@@ -189,10 +191,9 @@ build() {
 
     if test "${PKG_DEPENDS+1}"; then
         for dep in ${PKG_DEPENDS}; do
-            ${MD_EXE} --file="${ROOT}/packages/${dep}/build.md" check
-            # if ! ${MD_EXE} --file="${ROOT}/packages/${dep}" check; then
-            # build "${dep}"
-            # fi
+            if ! ${MD_EXE} --file="${ROOT}/packages/${dep}/build.md" check; then
+                build "${dep}"
+            fi
         done
     fi
 
