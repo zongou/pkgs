@@ -140,6 +140,7 @@ setup_source() {
     *) ;;
     esac
 
+    mkdir -p "${SOURCES_ROOT}"
     PKG_TARBALL="${SOURCES_ROOT}/${PKG_BASENAME}${PKG_EXTNAME}"
 
     if ! test -f "${PKG_TARBALL}"; then
