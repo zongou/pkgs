@@ -33,6 +33,7 @@ patch -up1 <"${PKG_CONFIG_DIR}/proot-try-TMPDIR.patch"
 ## Add to toolchain search dirs
 export CFLAGS="-I${OUTPUT_DIR}/include"
 export LDFLAGS="-L${OUTPUT_DIR}/lib"
+export CPPFLAGS="${CPPFLAGS+${CPPFLAGS}} -DARG_MAX=131072"
 
 ## Make small size stripped
 if test ${stripped+1} && test ${stripped} = "1"; then
