@@ -53,5 +53,4 @@ fi
 
 make -C src distclean || true
 make -C src V=1 "PREFIX=${OUTPUT_DIR}" ${STRIP+STRIP="${STRIP}"} -j"${JOBS}" install
-
 ```
