@@ -43,6 +43,7 @@ setup_target() {
 
             BUILD_PREFIX="${BUILD_PREFIX-${BUILD_ROOT}/${ANDROID_ABI}}"
             OUTPUT_DIR="${ROOT}/output/${ANDROID_ABI}"
+            LDFLAGS="-Wl,-z,max-page-size=16384"
             ;;
         *)
             export ZIG_TARGET=${TARGET}

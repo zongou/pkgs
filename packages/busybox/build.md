@@ -35,7 +35,14 @@ patch -up1 <"${PKG_CONFIG_DIR}/0012-util-linux-mount-no-addmntent.patch"
 ## Build
 
 ```sh
-make ${HOSTCC+HOSTCC="${HOSTCC}"} ${CC+CC="${CC}"} ${AR+AR="${AR}"} ${STRIP+STRIP="${STRIP}"} -j"${JOBS}" busybox_unstripped
+make \
+  ${HOSTCC+HOSTCC="${HOSTCC}"} \
+  ${CC+CC="${CC}"} \
+  ${AR+AR="${AR}"} \
+  ${STRIP+STRIP="${STRIP}"} \
+  ${LDFLAGS+LDFLAGS="${LDFLAGS}"} \
+  -j"${JOBS}" busybox_unstripped
+  
 ${OBJCOPY} --strip-all busybox_unstripped busybox && chmod +x busybox
 install -Dt "${OUTPUT_DIR}/bin" busybox
 ```
