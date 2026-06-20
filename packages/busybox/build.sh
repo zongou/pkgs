@@ -25,6 +25,7 @@ configure() {
 	patch -up1 <"${PKG_CONFIG_DIR}/0009-networking-httpd-default-port.patch"
 	patch -up1 <"${PKG_CONFIG_DIR}/0011-networking-tftp-no-chroot.patch"
 	patch -up1 <"${PKG_CONFIG_DIR}/0012-util-linux-mount-no-addmntent.patch"
+	patch -up1 <"${PKG_CONFIG_DIR}/0016-explicit_bzero.patch"
 }
 
 build() {
