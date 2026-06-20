@@ -2,7 +2,7 @@ PKG_HOMEPAGE=https://busybox.net/
 PKG_DESCRIPTION="Tiny versions of many common UNIX utilities into a single small executable"
 PKG_LICENSE="GPL-2.0"
 
-PKG_VERSION=1.37.0
+PKG_VERSION=1.38.0
 PKG_BASENAME=busybox-${PKG_VERSION}
 PKG_EXTNAME=.tar.bz2
 PKG_SRCURL=https://busybox.net/downloads/${PKG_BASENAME}${PKG_EXTNAME}
