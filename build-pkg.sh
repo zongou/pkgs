@@ -66,7 +66,7 @@ setup_target() {
   fi
 
   mkdir -p "${BUILD_PREFIX}"
-  mkdir -p "${OUTPUT_DIR}" "${OUTPUT_DIR}/bin" "${OUTPUT_DIR}/lib"
+  mkdir -p "${OUTPUT_DIR}" "${OUTPUT_DIR}/bin" "${OUTPUT_DIR}/lib" "${OUTPUT_DIR}/include"
 
   ## pkg-conf
   export PKG_CONFIG_PATH="${OUTPUT_DIR}/lib/pkgconfig"
